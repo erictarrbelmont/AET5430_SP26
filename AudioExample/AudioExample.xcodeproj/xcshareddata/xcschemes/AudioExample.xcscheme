@@ -45,7 +45,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/erictarr/AET5430_SP25/AudioExample/AudioExample"
+      customWorkingDirectory = "/Users/eric.tarr/AET5430_SP26/AudioExample/AudioExample"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

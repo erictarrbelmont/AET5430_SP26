@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		498EAED12F3273A300ABB453 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EAED02F3273A300ABB453 /* AudioToolbox.framework */; };
+		498EAED32F3273B500ABB453 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 498EAED22F3273B500ABB453 /* CoreFoundation.framework */; };
 		AC0A7D742348F55500E59A4A /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC0A7D732348F55500E59A4A /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +25,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		498EAED02F3273A300ABB453 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		498EAED22F3273B500ABB453 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		AC0A7D702348F55500E59A4A /* AudioExample */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AudioExample; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC0A7D732348F55500E59A4A /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AC0A7D7A2348F83700E59A4A /* AudioFile */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AudioFile; sourceTree = "<group>"; };
@@ -33,16 +37,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				498EAED32F3273B500ABB453 /* CoreFoundation.framework in Frameworks */,
+				498EAED12F3273A300ABB453 /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		498EAECF2F3273A300ABB453 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				498EAED22F3273B500ABB453 /* CoreFoundation.framework */,
+				498EAED02F3273A300ABB453 /* AudioToolbox.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AC0A7D672348F55500E59A4A = {
 			isa = PBXGroup;
 			children = (
 				AC0A7D722348F55500E59A4A /* AudioExample */,
+				498EAECF2F3273A300ABB453 /* Frameworks */,
 				AC0A7D712348F55500E59A4A /* Products */,
 			);
 			sourceTree = "<group>";
