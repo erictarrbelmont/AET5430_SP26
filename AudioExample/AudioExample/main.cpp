@@ -12,6 +12,17 @@
 #include "AudioFile/Sound.hpp"
 using namespace std;
 
+void myGainFunction(vector<vector<float>> & sig, int N, float dBAmp){
+    
+    float A = powf(10.f,dBAmp/20.f); // A - linear amplitude
+    
+    // Stereo processing
+    for (int c = 0; c < 2; ++c){
+        for (int n = 0; n < N; ++n){
+            sig[c][n] *= A;
+        }
+    }
+}
 
 void myGainFunction(vector<float> & sig, int N, float dBAmp){
     vector<float> * functionP = &sig; // memory address of signal in function
@@ -32,38 +43,67 @@ void myArrayFunction(float * array, int N){
     
 }
 
-
-int main() {
-    
-    string filename = "AcGtr.wav";
-    vector<float> signal;
+// User created structure
+struct AudioInfo {
+    string filename;
     int Fs;
     int bitDepth;
     int numChannels;
-    
+    int N;
+};
 
-    audioread(filename, signal, Fs, bitDepth, numChannels);
+class GainEffect{
+public:
     
-    sound(signal,Fs,bitDepth,numChannels);
+    void setdBAmp(float dBValue){
+        dBAmp = dBValue;
+        A = pow(10.f,dBAmp/20.f);
+    }
     
-    int N = signal.size();
+    float dBAmp; // decibel amplitude
+    float A; // linear amplitude
+};
+
+int main() {
     
-    //int * p; // declare pointer
-    //p = &N;
+    AudioInfo info;
+    info.filename = "stereoDrums.wav";
     
-    //int M = (*p) + 1; // de-reference "p" + 1
+    vector<vector<float>> signal;
     
-    vector<float> * mainP = &signal; // memory address of signal in main
+    audioread(info.filename, signal, info.Fs, info.bitDepth, info.numChannels);
     
-    myGainFunction(signal, N, -18.f);
+    //sound(signal,Fs,bitDepth,numChannels);
     
-    float myArray[5] = {1.f,2.f,3.f,4.f,5.f};
+    // For stereo, get size of one of the channels
+    if (info.numChannels == 1){
+        info.N = signal.size();
+    }
+    else{
+        info.N = signal[0].size();
+    }
     
-    myArrayFunction(myArray, 5);
+    GainEffect gain;
+    gain.setdBAmp(-18.f);
+    
+    
+    myGainFunction(signal, info.N, -18.f);
+    
+    
+    vector<float> monoSignal;
+    
+    AudioInfo monoInfo;
+    monoInfo.filename = "AcGtr.wav";
+    audioread(monoInfo.filename,
+              monoSignal,
+              monoInfo.Fs,
+              monoInfo.bitDepth,
+              monoInfo.numChannels);
+    
     
     string outputFilename = "myOutputFile.wav";
     
-    audiowrite(outputFilename, signal, Fs, bitDepth, numChannels);
+    audiowrite(outputFilename, signal, info.Fs, info.bitDepth, info.numChannels);
     
     return 0;
 }
