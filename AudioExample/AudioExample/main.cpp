@@ -61,6 +61,42 @@ void myArrayFunction(float * array, int N){
 }
 
 
+class MyAudioBuffer{
+    
+public:
+ 
+    void fillBufferWithSamples(vector<float> & signal, int & signalIndex){
+        int signalSize = signal.size();
+        for (int n = 0; n < bufferSize; ++n){
+            if (signalIndex < signalSize){
+                samples[0][n] = signal[signalIndex];
+                signalIndex++;
+            }
+            else {
+                samples[0][n] = 0.f;
+            }
+        }
+    }
+    
+    void setBufferSize(int b){
+        bufferSize = b;
+    }
+    
+    float getSample(int c, int n){
+        return samples[c][n];
+    }
+    
+private:
+    static const int MAXBUFFERSIZE = 1024;
+    static const int MAXNUMCHANNELS = 2;
+    
+    float samples[MAXNUMCHANNELS][MAXBUFFERSIZE];
+    
+    int bufferSize = 1024; // could change from "DAW"
+    int numChannels = 1;
+    
+};
+
 
 class GainEffect{
 public:
@@ -105,6 +141,12 @@ public:
 class TremoloEffect
 {
 public:
+    
+    enum LFOType{
+        SINE,
+        SQUARE
+    };
+    
     void processSignal(vector<float> & signal, int N){
         for (int n = 0; n < N ; ++n){
             signal[n] = processSample(signal[n]);
@@ -113,7 +155,20 @@ public:
     
     float processSample(float x){
         // Tremolo effect goes in here
-        float lfo = A * sin(phi) + mu;
+        float lfo;
+        if (type == 0){
+            lfo = A * sin(phi) + mu;
+        }
+        else{
+            //square
+            if (phi < M_PI){
+                lfo = 1.f;
+            }
+            else {
+                lfo = A * -1.f + mu;
+            }
+            
+        }
         float y = lfo * x;
         
         // Update current phase angle for next sample
@@ -137,10 +192,16 @@ public:
         mu = 1.f - A;
     }
     
+    void setType(LFOType t){
+        // sine = true, square = false
+        type = t;
+    }
+    
     void setFs(float sampleRate){
         Fs = sampleRate;
     }
-    
+
+private:
     float freq = 1.f; // frequency in Hz
     float depth = 1.f; // intensity of effect
     float Fs = 44100.f;
@@ -150,6 +211,9 @@ public:
     
     float phi = 0.f; // initial phase angle in radians
     float phaseChange = 0.1f; // change per 1 sample
+    
+    // Data type is the enum
+    LFOType type = LFOType::SINE;
 };
 
 
@@ -178,6 +242,17 @@ int main() {
         //info.N = signal[0].size();
     }
     
+    MyAudioBuffer buffer;
+
+    int signalIndex = 0;
+    while (signalIndex < info.N){
+        buffer.fillBufferWithSamples(signal, signalIndex);
+        
+        // Need to write this for effect
+        //effect.processBuffer(buffer);
+    }
+    
+    
 //    {
 //        GainEffect gain2;
 //        gain2.setdBAmp(6.f);
@@ -191,8 +266,9 @@ int main() {
     
     TremoloEffect effect;
     effect.setFs(info.Fs);
-    effect.setRate(2.f);
-    effect.setDepth(0.5f);
+    effect.setRate(4.f);
+    effect.setDepth(1.f);
+    effect.setType(TremoloEffect::LFOType::SINE);
     effect.processSignal(signal, info.N);
     
     sound(signal, info.Fs, info.bitDepth, info.numChannels);
