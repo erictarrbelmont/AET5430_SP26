@@ -16,8 +16,16 @@ void EchoEffectProcessor::prepareToPlay(float sampleRate){
     Fs = sampleRate;
 }
 
+void EchoEffectProcessor::setFeedbackGain(float feedbackGain){
+    g = feedbackGain;
+}
+
 void EchoEffectProcessor::setDelayInMilliseconds(float delayMS){
     delay.setDelayInMilliseconds(delayMS);
+}
+
+void EchoEffectProcessor::setWetPercentage(float wetPercent){
+    wet = wetPercent / 100.f;
 }
 
 void EchoEffectProcessor::processBuffer(float * buffer, int c, int N){
@@ -28,8 +36,9 @@ void EchoEffectProcessor::processBuffer(float * buffer, int c, int N){
 
 float EchoEffectProcessor::processSample(float x, int c){
     
-    float v = delay.processSample(x, c);
-    float y = v + x;
+    float w = x + (v[c] * g);
+    v[c] = delay.processSample(w, c);
+    float y = wet * v[c] + (1.f-wet) * x;
     
     return y; 
     

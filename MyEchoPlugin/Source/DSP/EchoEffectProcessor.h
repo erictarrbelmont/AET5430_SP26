@@ -21,6 +21,10 @@ class EchoEffectProcessor {
     
     void setDelayInMilliseconds(float delayMS);
     
+    void setWetPercentage(float wetPercent);
+    
+    void setFeedbackGain(float feedbackGain);
+    
     void processBuffer(float * buffer, int c, int N);
     
     float processSample(float x, int c);
@@ -31,5 +35,10 @@ class EchoEffectProcessor {
     
     float Fs;
     
+    float wet = 0.f;
+    
+    float g = 0.f; // linear gain
+    
+    float v[2] = {0.f};
     
 };
