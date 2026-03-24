@@ -94,7 +94,7 @@ void MyEchoPluginAudioProcessor::changeProgramName (int index, const juce::Strin
 void MyEchoPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     echo.prepareToPlay(sampleRate);
-    echo.setDelayInMilliseconds(300.f);
+    echo.setDelayInMilliseconds(30.f);
 }
 
 void MyEchoPluginAudioProcessor::releaseResources()
@@ -139,8 +139,8 @@ void MyEchoPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         buffer.clear (i, 0, buffer.getNumSamples());
 
 
-    echo.setWetPercentage(40.f);
-    echo.setFeedbackGain(0.7f);
+    echo.setWetPercentage(50.f);
+    echo.setFeedbackGain(0.0f);
     
     int N = buffer.getNumSamples();
     

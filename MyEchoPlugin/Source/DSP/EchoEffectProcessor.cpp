@@ -12,8 +12,13 @@
 
 
 void EchoEffectProcessor::prepareToPlay(float sampleRate){
-    delay.prepareToPlay(sampleRate);
+    //delay.prepareToPlay(sampleRate);
+    delay.setFs(sampleRate);
+    delay.setSpeed(2.f); // LFO speed
+    delay.setDepth(5.f); // LFO depth
+    
     Fs = sampleRate;
+    
 }
 
 void EchoEffectProcessor::setFeedbackGain(float feedbackGain){
@@ -21,7 +26,9 @@ void EchoEffectProcessor::setFeedbackGain(float feedbackGain){
 }
 
 void EchoEffectProcessor::setDelayInMilliseconds(float delayMS){
-    delay.setDelayInMilliseconds(delayMS);
+    //delay.setDelayInMilliseconds(delayMS);
+    float delaySamples = Fs * (delayMS / 1000.f);
+    delay.setDelaySamples(delaySamples);
 }
 
 void EchoEffectProcessor::setWetPercentage(float wetPercent){

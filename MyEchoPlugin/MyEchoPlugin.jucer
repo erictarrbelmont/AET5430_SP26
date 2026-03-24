@@ -20,6 +20,10 @@
               file="Source/DSP/EchoEffectProcessor.cpp"/>
         <FILE id="LulxSf" name="EchoEffectProcessor.h" compile="0" resource="0"
               file="Source/DSP/EchoEffectProcessor.h"/>
+        <FILE id="iKGEI8" name="FractionalDelay.cpp" compile="1" resource="0"
+              file="Source/DSP/FractionalDelay.cpp"/>
+        <FILE id="S5A8Si" name="FractionalDelay.hpp" compile="0" resource="0"
+              file="Source/DSP/FractionalDelay.hpp"/>
       </GROUP>
     </GROUP>
   </MAINGROUP>

@@ -28,6 +28,53 @@ void audioread(AudioInfo & info, vector<float> & signal){
 }
 
 
+class AudioEffectProcessor {
+  // Generic "base" class
+  // Include functions and variables
+  // that show up in all audio effect classes
+public:
+    
+    void prepareToPlay(float sampleRate){
+        Fs = sampleRate;
+    }
+    
+    void processBuffer(vector<float> & buffer, int c, int N){
+        for (int n = 0; n < N; ++n){
+            buffer[n] = processSample(buffer[n],c);
+        }
+    }
+    
+    virtual float processSample(float x, int c){
+        return x;
+    }
+
+private:
+    
+    float Fs;
+    
+};
+
+
+class GainEffectProcessor : public AudioEffectProcessor
+{
+    // Specific "derived" class
+public:
+    
+    void setLinearGain(float gain){
+        g = gain;
+    }
+    
+    float processSample(float x, int c) override {
+        return x * g;
+    }
+    
+private:
+    float g = 1.f;
+};
+
+
+
+
 
 int main() {
     
@@ -52,7 +99,7 @@ int main() {
     
     
     
-    sound(signal, info.Fs, info.bitDepth, info.numChannels);
+    //sound(signal, info.Fs, info.bitDepth, info.numChannels);
     
     
     //myGainFunction(signal, info.N, -18.f);
@@ -67,6 +114,12 @@ int main() {
               monoInfo.Fs,
               monoInfo.bitDepth,
               monoInfo.numChannels);
+    
+    GainEffectProcessor effect;
+    
+    effect.prepareToPlay(monoInfo.Fs);
+    effect.setLinearGain(0.5f);
+    effect.processBuffer(monoSignal, 0, signal.size());
     
     
     string outputFilename = "myOutputFile.wav";

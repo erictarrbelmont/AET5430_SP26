@@ -11,6 +11,7 @@
 #pragma once
 
 #include "DelayEffectProcessor.h"
+#include "FractionalDelay.hpp"
 
 
 class EchoEffectProcessor {
@@ -31,7 +32,8 @@ class EchoEffectProcessor {
     
     private:
     
-    DelayEffectProcessor delay;
+    //DelayEffectProcessor delay;
+    FractionalDelay delay;
     
     float Fs;
     
