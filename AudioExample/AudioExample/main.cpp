@@ -44,9 +44,12 @@ public:
         }
     }
     
-    virtual float processSample(float x, int c){
-        return x;
-    }
+    //virtual float processSample(float x, int c){
+    //    return x;
+    //}
+    
+    // PURE Virtual Function
+    virtual float processSample(float x, int c) = 0;
 
 private:
     

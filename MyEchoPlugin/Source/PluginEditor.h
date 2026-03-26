@@ -25,6 +25,10 @@ public:
     void resized() override;
 
 private:
+    
+    juce::ToggleButton button;
+    
+    
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     MyEchoPluginAudioProcessor& audioProcessor;
