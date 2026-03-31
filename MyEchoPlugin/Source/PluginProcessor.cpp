@@ -131,6 +131,10 @@ bool MyEchoPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 
 void MyEchoPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    
+    if (isBypassed)
+        return;
+    
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();

@@ -54,6 +54,12 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    bool isBypassed = false;
+    
+    float wetValue = 0.f;
+    
+    int distortionSelection = 1;
+    
 private:
     
     EchoEffectProcessor echo;
