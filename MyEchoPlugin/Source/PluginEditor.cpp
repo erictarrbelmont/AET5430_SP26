@@ -46,6 +46,9 @@ MyEchoPluginAudioProcessorEditor::MyEchoPluginAudioProcessorEditor (MyEchoPlugin
 
 MyEchoPluginAudioProcessorEditor::~MyEchoPluginAudioProcessorEditor()
 {
+    bypassButton.removeListener(this);
+    wetDrySlider.removeListener(this);
+    distortionSelector.removeListener(this);
 }
 
 //==============================================================================
