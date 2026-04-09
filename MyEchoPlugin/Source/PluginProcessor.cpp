@@ -19,10 +19,27 @@ MyEchoPluginAudioProcessor::MyEchoPluginAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ) , apvts(*this,nullptr,"Params",createParams())
 #endif
 {
 }
+
+juce::AudioProcessorValueTreeState::ParameterLayout MyEchoPluginAudioProcessor::createParams(){
+    
+    std::vector<std::unique_ptr<juce::RangedAudioParameter>> params;
+    
+    // Add our sliders to params
+    params.push_back(std::make_unique<juce::AudioParameterFloat> (juce::ParameterID({"Wet",1}),"Dry/Wet",0.f,100.f,50.f));
+    
+    // Add our buttons to params
+    params.push_back(std::make_unique<juce::AudioParameterBool> (juce::ParameterID({"Bypass",1}),"Bypass",false));
+    
+    // Add out ComboBox
+    params.push_back(std::make_unique<juce::AudioParameterInt>(juce::ParameterID({"DistortionSelect",1}), "Distortion Type", 1, 2, 1));
+    
+    return {params.begin(),params.end()};
+}
+
 
 MyEchoPluginAudioProcessor::~MyEchoPluginAudioProcessor()
 {
@@ -142,7 +159,7 @@ void MyEchoPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-
+    
     echo.setWetPercentage(wetValue);
     echo.setFeedbackGain(0.0f);
     
@@ -177,9 +194,13 @@ juce::AudioProcessorEditor* MyEchoPluginAudioProcessor::createEditor()
 //==============================================================================
 void MyEchoPluginAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
+    
+    auto currentState = apvts.copyState();
+    
+    std::unique_ptr<juce::XmlElement> xml (currentState.createXml());
+    
+    copyXmlToBinary(*xml, destData);
+    
 }
 
 void MyEchoPluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)

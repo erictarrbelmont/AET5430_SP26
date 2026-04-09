@@ -57,11 +57,27 @@ private:
     
 };
 
+class MySimpleClass {
+public:
+    
+    MySimpleClass(int i){
+        j = i;
+    }
+    
+private:
+    int j;
+};
+
 
 class GainEffectProcessor : public AudioEffectProcessor
 {
     // Specific "derived" class
 public:
+    
+    GainEffectProcessor(int i,int i1, int i2) : msc(i), msc1(i1), msc2(i2)
+    {
+        
+    }
     
     void setLinearGain(float gain){
         g = gain;
@@ -73,6 +89,10 @@ public:
     
 private:
     float g = 1.f;
+    
+    MySimpleClass msc;
+    MySimpleClass msc1;
+    MySimpleClass msc2;
 };
 
 
@@ -118,7 +138,7 @@ int main() {
               monoInfo.bitDepth,
               monoInfo.numChannels);
     
-    GainEffectProcessor effect;
+    GainEffectProcessor effect {7};
     
     effect.prepareToPlay(monoInfo.Fs);
     effect.setLinearGain(0.5f);

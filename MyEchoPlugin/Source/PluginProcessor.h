@@ -60,7 +60,12 @@ public:
     
     int distortionSelection = 1;
     
+    juce::AudioProcessorValueTreeState apvts;
+    
 private:
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout  createParams();
+    
     
     EchoEffectProcessor echo;
     
