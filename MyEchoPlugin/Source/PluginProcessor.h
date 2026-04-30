@@ -54,20 +54,22 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    bool isBypassed = false;
+    std::atomic<bool> isBypassed = false;
     
-    float wetValue = 0.f;
+    std::atomic<float> wetValue = 0.f;
     
     int distortionSelection = 1;
     
     juce::AudioProcessorValueTreeState apvts;
+    
+    EchoEffectProcessor echo;
     
 private:
     
     juce::AudioProcessorValueTreeState::ParameterLayout  createParams();
     
     
-    EchoEffectProcessor echo;
+   
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MyEchoPluginAudioProcessor)

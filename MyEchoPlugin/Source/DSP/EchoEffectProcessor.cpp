@@ -32,7 +32,7 @@ void EchoEffectProcessor::setDelayInMilliseconds(float delayMS){
 }
 
 void EchoEffectProcessor::setWetPercentage(float wetPercent){
-    wet = wetPercent / 100.f;
+    wet.store(wetPercent / 100.f);
 }
 
 void EchoEffectProcessor::processBuffer(float * buffer, int c, int N){
@@ -43,9 +43,11 @@ void EchoEffectProcessor::processBuffer(float * buffer, int c, int N){
 
 float EchoEffectProcessor::processSample(float x, int c){
     
+    float l_wet = wet.load();
+    
     float w = x + (v[c] * g);
     v[c] = delay.processSample(w, c);
-    float y = wet * v[c] + (1.f-wet) * x;
+    float y = l_wet * v[c] + (1.f-l_wet) * x;
     
     return y; 
     

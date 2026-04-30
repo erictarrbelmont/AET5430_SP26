@@ -14,10 +14,7 @@
 //==============================================================================
 /**
 */
-class MyEchoPluginAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                        public juce::Button::Listener,
-                        public juce::Slider::Listener,
-                        public juce::ComboBox::Listener
+class MyEchoPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
     MyEchoPluginAudioProcessorEditor (MyEchoPluginAudioProcessor&);
@@ -26,11 +23,13 @@ public:
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
-    
-    void buttonClicked(juce::Button * button) override;
-    void sliderValueChanged(juce::Slider * slider) override;
-    void comboBoxChanged(juce::ComboBox * comboBox) override;
 
+    using SliderAttachment = juce::AudioProcessorValueTreeState::SliderAttachment;
+    
+    using ButtonAttachment = juce::AudioProcessorValueTreeState::ButtonAttachment;
+    
+    using ComboBoxAttachment = juce::AudioProcessorValueTreeState::ComboBoxAttachment;
+    
 private:
     
     juce::ToggleButton bypassButton;
@@ -41,6 +40,12 @@ private:
     juce::Label buttonLabel;
     
     juce::ComboBox distortionSelector;
+    
+    std::vector<std::unique_ptr<SliderAttachment>> sliderAttachments;
+    
+    std::vector<std::unique_ptr<ButtonAttachment>> buttonAttachments;
+    
+    std::vector<std::unique_ptr<ComboBoxAttachment>> comboBoxAttachments;
     
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

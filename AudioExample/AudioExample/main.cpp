@@ -74,11 +74,6 @@ class GainEffectProcessor : public AudioEffectProcessor
     // Specific "derived" class
 public:
     
-    GainEffectProcessor(int i,int i1, int i2) : msc(i), msc1(i1), msc2(i2)
-    {
-        
-    }
-    
     void setLinearGain(float gain){
         g = gain;
     }
@@ -90,9 +85,6 @@ public:
 private:
     float g = 1.f;
     
-    MySimpleClass msc;
-    MySimpleClass msc1;
-    MySimpleClass msc2;
 };
 
 
@@ -100,6 +92,30 @@ private:
 
 
 int main() {
+    
+    {
+        // Stack pointer
+        int i = 1;
+        int * pInt;
+        pInt = &i;
+        
+        // Heap pointer
+        int * pInt2 = new int(1);
+        
+        delete pInt2;
+        pInt2 = nullptr;
+        int test = 1;
+        
+        std::unique_ptr<int> pInt3 = make_unique<int>(1);
+        
+        // Cannot be copied
+        // std::unique_ptr<int> pInt4 = pInt3; //doesn't work
+        std::unique_ptr<int> pInt4 = std::move(pInt3);
+        
+        
+        std::shared_ptr<int> p5 = make_shared<int>(1);
+        std::shared_ptr<int> p6 = p5;
+    }
     
     AudioInfo info;
     info.filename = "AcGtr.wav";
@@ -138,7 +154,7 @@ int main() {
               monoInfo.bitDepth,
               monoInfo.numChannels);
     
-    GainEffectProcessor effect {7};
+    GainEffectProcessor effect;
     
     effect.prepareToPlay(monoInfo.Fs);
     effect.setLinearGain(0.5f);

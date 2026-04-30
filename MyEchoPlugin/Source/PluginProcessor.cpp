@@ -149,7 +149,7 @@ bool MyEchoPluginAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 void MyEchoPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     
-    if (isBypassed)
+    if (isBypassed.load())
         return;
     
     juce::ScopedNoDenormals noDenormals;
@@ -160,7 +160,6 @@ void MyEchoPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         buffer.clear (i, 0, buffer.getNumSamples());
 
     
-    echo.setWetPercentage(wetValue);
     echo.setFeedbackGain(0.0f);
     
     int N = buffer.getNumSamples();
@@ -205,8 +204,11 @@ void MyEchoPluginAudioProcessor::getStateInformation (juce::MemoryBlock& destDat
 
 void MyEchoPluginAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
+    std::unique_ptr<juce::XmlElement>  xml (getXmlFromBinary(data, sizeInBytes));
+    
+    juce::ValueTree newTree = juce::ValueTree::fromXml(*xml);
+    
+    apvts.replaceState(newTree);
 }
 
 //==============================================================================

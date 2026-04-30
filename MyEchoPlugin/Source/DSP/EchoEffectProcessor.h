@@ -37,7 +37,7 @@ class EchoEffectProcessor {
     
     float Fs;
     
-    float wet = 0.f;
+    std::atomic<float> wet = 0.f;
     
     float g = 0.f; // linear gain
     
